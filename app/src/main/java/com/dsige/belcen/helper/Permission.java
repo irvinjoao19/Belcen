@@ -21,9 +21,9 @@ public class Permission {
     public static int CAMERA_REQUEST = 1;
     public static int GALERY_REQUEST = 2;
     public static int SPEECH_REQUEST_DETALLE = 3;
-    public static int PERSONAL_REQUEST = 4;
-    public static int PERSONAL_INSERT_REQUEST = 5;
-    public static int PERSONAL_UPDATE_REQUEST = 6;
+    public static int CLIENTE_REQUEST = 4;
+    public static int CLIENTE_INSERT_REQUEST = 5;
+    public static int CLIENTE_UPDATE_REQUEST = 6;
 
 
     public static boolean hasPermissions(Context context, String... permissions) {

@@ -1,16 +1,22 @@
 package com.dsige.belcen.ui.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.dsige.belcen.R;
 import com.dsige.belcen.context.room.RoomViewModel;
+import com.dsige.belcen.helper.Permission;
+import com.dsige.belcen.helper.Util;
 import com.dsige.belcen.model.Cliente;
+import com.dsige.belcen.ui.activities.RegisterClientActivity;
 import com.dsige.belcen.ui.adapters.ClienteAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -25,9 +31,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class ClientFragment extends Fragment {
+
+    @OnClick(R.id.fab)
+    void submit(View view) {
+        switch (view.getId()) {
+            case R.id.fab:
+                startActivityForResult(new Intent(getContext(), RegisterClientActivity.class), Permission.CLIENTE_REQUEST);
+                break;
+        }
+    }
+
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -38,6 +60,8 @@ public class ClientFragment extends Fragment {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
     Unbinder unbinder;
     ClienteAdapter clienteAdapter;
     RoomViewModel roomViewModel;
@@ -81,7 +105,6 @@ public class ClientFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         clienteAdapter = new ClienteAdapter((c, v, position) -> {
             String cliente = new Gson().toJson(c);
@@ -111,6 +134,61 @@ public class ClientFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Permission.CLIENTE_REQUEST) {
+            if (resultCode == Permission.CLIENTE_INSERT_REQUEST) {
+                String cliente = data.getStringExtra("cliente");
+                Cliente c = new Gson().fromJson(cliente, Cliente.class);
+                Completable completable = roomViewModel.insertClient(c);
+                completable.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new CompletableObserver() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Util.toastMensaje(getContext(), "Cliente Agregado");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.i("TAG", e.toString());
+                            }
+                        });
+//                aprobacionAdapter.clearByPosition(position);
+            } else if (resultCode == Permission.CLIENTE_UPDATE_REQUEST) {
+                String personal = data.getStringExtra("cliente");
+                Cliente c = new Gson().fromJson(personal, Cliente.class);
+                Completable completable = roomViewModel.updateClient(c);
+                completable.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new CompletableObserver() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Util.toastMensaje(getContext(), "Personal Actualizado");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.i("TAG", e.toString());
+                            }
+                        });
+            }
+        }
+    }
+
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);

@@ -4,14 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.dsige.belcen.R;
-import com.dsige.belcen.helper.Gps;
-import com.dsige.belcen.helper.Util;
 import com.dsige.belcen.ui.fragments.ClientFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
-import android.view.View;
-
+import com.dsige.belcen.ui.fragments.ProductsFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -23,7 +18,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,35 +28,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
     @BindView(R.id.drawerLayout)
     DrawerLayout drawerLayout;
     @BindView(R.id.navigationView)
     NavigationView navigationView;
-
-    @OnClick(R.id.fab)
-    public void submit(View view) {
-        switch (view.getId()) {
-            case R.id.fab:
-//                Gps gps = new Gps(this);
-//                if (gps.isLocationEnabled()) {
-//                    if (gps.getLocationTest() != null) {
-//                        Util.getLocationNameText(this, gps.getLocationTest());
-//                    } else {
-//                        gps.showSettingsAlert();
-//                    }
-//                } else {
-//                    gps.showSettingsAlert();
-//                }
-
-                startActivity(new Intent(this, RegisterClientActivity.class));
-
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-                break;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        fragmentByDefault();
     }
 
     @Override
@@ -110,11 +80,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.clientes:
                 changeFragment(ClientFragment.newInstance("", ""), item.getTitle().toString());
                 break;
-            case R.id.toma_pedidos:
+            case R.id.productos:
+                changeFragment(ProductsFragment.newInstance("", ""), item.getTitle().toString());
                 break;
-            case R.id.cancelacion:
+            case R.id.pedidos:
                 break;
-            case R.id.send_pedidos:
+            case R.id.mapas:
                 break;
             case R.id.logout:
                 Intent intent = new Intent(this, LoginActivity.class);
@@ -132,5 +103,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .replace(R.id.content_frame, fragment)
                 .commit();
         Objects.requireNonNull(getSupportActionBar()).setTitle(title);
+    }
+
+    private void fragmentByDefault() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content_frame, ClientFragment.newInstance("", ""))
+                .commit();
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Cliente");
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 }

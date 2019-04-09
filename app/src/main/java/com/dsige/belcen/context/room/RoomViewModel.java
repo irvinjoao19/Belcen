@@ -3,7 +3,9 @@ package com.dsige.belcen.context.room;
 import android.app.Application;
 
 import com.dsige.belcen.context.repository.RoomRepository;
+import com.dsige.belcen.model.Categoria;
 import com.dsige.belcen.model.Cliente;
+import com.dsige.belcen.model.Producto;
 import com.dsige.belcen.model.Usuario;
 
 import java.util.List;
@@ -26,6 +28,8 @@ public class RoomViewModel extends AndroidViewModel {
         roomRepository.closeRoom();
     }
 
+    //TODO: Usuario
+
     public void insertUser(Usuario user) {
         roomRepository.insertUser(user);
     }
@@ -38,8 +42,14 @@ public class RoomViewModel extends AndroidViewModel {
         return roomRepository.deleteUser(user);
     }
 
-    public void insertClient(Cliente c) {
-        roomRepository.insertClient(c);
+    //TODO: Cliente
+
+    public Completable insertClient(Cliente c) {
+        return roomRepository.insertClient(c);
+    }
+
+    public Completable updateClient(Cliente c) {
+        return roomRepository.updateClient(c);
     }
 
     public LiveData<List<Cliente>> getCliente() {
@@ -50,4 +60,31 @@ public class RoomViewModel extends AndroidViewModel {
         return roomRepository.deleteCliente(c);
     }
 
+    //TODO : Producto
+
+    public void insertProducto(Producto p) {
+        roomRepository.insertProducto(p);
+    }
+
+    public LiveData<List<Producto>> getProducto() {
+        return roomRepository.getProducto();
+    }
+
+    public Completable deleteProducto(Producto p) {
+        return roomRepository.deleteProducto(p);
+    }
+
+    //TODO : Categoria
+
+    public void insertCategoria(Categoria c) {
+        roomRepository.insertCategoria(c);
+    }
+
+    public LiveData<List<Categoria>> getCategoria() {
+        return roomRepository.getCategoria();
+    }
+
+    public Completable deleteCategoria(Categoria c) {
+        return roomRepository.deleteCategoria(c);
+    }
 }

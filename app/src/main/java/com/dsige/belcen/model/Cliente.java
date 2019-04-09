@@ -9,26 +9,33 @@ public class Cliente {
 
     @PrimaryKey(autoGenerate = true)
     private int clienteId;
+    private String tipo;
+    private String documento;
     private String nombre;
+    private String pago;
+    private String departamento;
+    private String distrito;
     private String direccion;
     private String telefono;
-    private String contacto;
-    private String documento;
-    private String descripcion;
+    private String email;
+    private String fechaVisita;
     private int estado;
 
     public Cliente() {
     }
 
     @Ignore
-    public Cliente(int clienteId, String nombre, String direccion, String telefono, String contacto, String documento, String descripcion, int estado) {
-        this.clienteId = clienteId;
+    public Cliente(String tipo, String documento, String nombre, String pago, String departamento, String distrito, String direccion, String telefono, String email, String fechaVisita, int estado) {
+        this.tipo = tipo;
+        this.documento = documento;
         this.nombre = nombre;
+        this.pago = pago;
+        this.departamento = departamento;
+        this.distrito = distrito;
         this.direccion = direccion;
         this.telefono = telefono;
-        this.contacto = contacto;
-        this.documento = documento;
-        this.descripcion = descripcion;
+        this.email = email;
+        this.fechaVisita = fechaVisita;
         this.estado = estado;
     }
 
@@ -40,12 +47,52 @@ public class Cliente {
         this.clienteId = clienteId;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
+
     public String getNombre() {
         return nombre;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getPago() {
+        return pago;
+    }
+
+    public void setPago(String pago) {
+        this.pago = pago;
+    }
+
+    public String getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
+    }
+
+    public String getDistrito() {
+        return distrito;
+    }
+
+    public void setDistrito(String distrito) {
+        this.distrito = distrito;
     }
 
     public String getDireccion() {
@@ -64,28 +111,20 @@ public class Cliente {
         this.telefono = telefono;
     }
 
-    public String getContacto() {
-        return contacto;
+    public String getEmail() {
+        return email;
     }
 
-    public void setContacto(String contacto) {
-        this.contacto = contacto;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getDocumento() {
-        return documento;
+    public String getFechaVisita() {
+        return fechaVisita;
     }
 
-    public void setDocumento(String documento) {
-        this.documento = documento;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setFechaVisita(String fechaVisita) {
+        this.fechaVisita = fechaVisita;
     }
 
     public int getEstado() {

@@ -49,10 +49,14 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.textViewName)
-        TextView textViewName;
-        @BindView(R.id.textViewAddress)
-        TextView textViewAddress;
+        @BindView(R.id.textViewNombre)
+        TextView textViewNombre;
+        @BindView(R.id.textViewDocumento)
+        TextView textViewDocumento;
+        @BindView(R.id.textViewDireccion)
+        TextView textViewDireccion;
+        @BindView(R.id.textViewVisita)
+        TextView textViewVisita;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -60,8 +64,10 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.ViewHold
         }
 
         void bind(Cliente c, OnItemClickListener listener) {
-            textViewName.setText(c.getNombre());
-            textViewAddress.setText(c.getDireccion());
+            textViewNombre.setText(c.getNombre());
+            textViewDocumento.setText(c.getTipo());
+            textViewDireccion.setText(c.getDireccion());
+            textViewVisita.setText(String.format("Ultima Visita : %s", c.getFechaVisita()));
             itemView.setOnClickListener(v -> listener.onItemClick(c, v, getAdapterPosition()));
         }
     }

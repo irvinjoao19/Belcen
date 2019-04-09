@@ -2,6 +2,7 @@ package com.dsige.belcen.helper;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -42,6 +43,7 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -93,7 +95,7 @@ public class Util {
 
     }
 
-    public static String getFechaEditar() {
+    public static String getFecha() {
         date = new Date();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         FechaActual = format.format(date);
@@ -584,5 +586,19 @@ public class Util {
         } catch (IOException e) {
             Util.toastMensaje(context, e.toString());
         }
+    }
+
+    public static void getDateDialog(Context context, View view, TextInputEditText input) {
+        Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context, (view1, year, monthOfYear, dayOfMonth) -> {
+            String month = (monthOfYear < 10) ? "0" + String.valueOf(monthOfYear + 1) : String.valueOf(monthOfYear + 1);
+            String day = (dayOfMonth < 10) ? "0" + dayOfMonth : String.valueOf(dayOfMonth);
+            String fecha = day + "/" + month + "/" + year;
+            input.setText(fecha);
+        }, mYear, mMonth, mDay);
+        datePickerDialog.show();
     }
 }

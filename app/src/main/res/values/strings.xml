@@ -77,4 +77,6 @@
     <string name="direccion">Dirección</string>
     <string name="telefono">Telefono</string>
     <string name="email">Email</string>
+    <string name="dia_visita">Día de visita</string>
+    <string name="tipo">Tipo</string>
 </resources>
