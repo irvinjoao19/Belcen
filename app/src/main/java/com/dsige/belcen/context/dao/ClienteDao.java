@@ -1,6 +1,6 @@
 package com.dsige.belcen.context.dao;
 
-import com.dsige.belcen.model.Cliente;
+import com.dsige.belcen.mvp.model.Cliente;
 
 import java.util.List;
 

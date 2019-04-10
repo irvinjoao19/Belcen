@@ -1,6 +1,6 @@
 package com.dsige.belcen.context.dao;
 
-import com.dsige.belcen.model.Usuario;
+import com.dsige.belcen.mvp.model.Usuario;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

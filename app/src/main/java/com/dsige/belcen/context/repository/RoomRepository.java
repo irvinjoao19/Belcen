@@ -4,10 +4,11 @@ import android.app.Application;
 import android.util.Log;
 
 import com.dsige.belcen.context.room.AppDataBase;
-import com.dsige.belcen.model.Categoria;
-import com.dsige.belcen.model.Cliente;
-import com.dsige.belcen.model.Producto;
-import com.dsige.belcen.model.Usuario;
+import com.dsige.belcen.mvp.model.Categoria;
+import com.dsige.belcen.mvp.model.Cliente;
+import com.dsige.belcen.mvp.model.Pedido;
+import com.dsige.belcen.mvp.model.Producto;
+import com.dsige.belcen.mvp.model.Usuario;
 
 import java.util.List;
 
@@ -112,6 +113,28 @@ public class RoomRepository {
         return Completable.fromAction(() -> appDataBase.productoDao().deleteProductoTask(p));
     }
 
+    public void updateProducto(Producto p) {
+        Completable.fromAction(() -> appDataBase.productoDao().updateProductoTask(p))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.i("TAG", "ACTUALIZADO");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i("TAG", e.toString());
+                    }
+                });
+    }
+
     //TODO : Categoria
 
     public void insertCategoria(Categoria c) {
@@ -142,5 +165,41 @@ public class RoomRepository {
 
     public Completable deleteCategoria(Categoria p) {
         return Completable.fromAction(() -> appDataBase.categoriaDao().deleteCategoriaTask(p));
+    }
+
+    //TODO : Pedido
+
+    public void insertPedido(Pedido p) {
+        Completable.fromAction(() -> appDataBase.pedidoDao().insertPedidoTask(p))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.i("TAG", "COMPLETADO");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i("TAG", e.toString());
+                    }
+                });
+    }
+
+    public LiveData<List<Pedido>> getPedido() {
+        return appDataBase.pedidoDao().getPedidoTask();
+    }
+
+    public Completable deletePedido(Pedido p) {
+        return Completable.fromAction(() -> appDataBase.pedidoDao().deletePedidoTask(p));
+    }
+
+    public Completable updatePedido(Pedido p) {
+        return Completable.fromAction(() -> appDataBase.pedidoDao().updatePedidoTask(p));
     }
 }

@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,7 +15,9 @@ import com.dsige.belcen.R;
 import com.dsige.belcen.context.room.RoomViewModel;
 import com.dsige.belcen.helper.Permission;
 import com.dsige.belcen.helper.Util;
-import com.dsige.belcen.model.Cliente;
+import com.dsige.belcen.mvp.model.Cliente;
+import com.dsige.belcen.ui.activities.FileClientActivity;
+import com.dsige.belcen.ui.activities.MapsActivity;
 import com.dsige.belcen.ui.activities.RegisterClientActivity;
 import com.dsige.belcen.ui.adapters.ClienteAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -62,12 +66,19 @@ public class ClientFragment extends Fragment {
     RecyclerView recyclerView;
     @BindView(R.id.fab)
     FloatingActionButton fab;
-    Unbinder unbinder;
-    ClienteAdapter clienteAdapter;
-    RoomViewModel roomViewModel;
+    private Unbinder unbinder;
+    private ClienteAdapter clienteAdapter;
+    private RoomViewModel roomViewModel;
 
     public ClientFragment() {
 
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.pedidos).setVisible(false).setEnabled(false);
+        menu.findItem(R.id.add).setVisible(false).setEnabled(false);
     }
 
     public static ClientFragment newInstance(String param1, String param2) {
@@ -93,6 +104,7 @@ public class ClientFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -107,11 +119,18 @@ public class ClientFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         clienteAdapter = new ClienteAdapter((c, v, position) -> {
-            String cliente = new Gson().toJson(c);
+            switch (v.getId()) {
+                case R.id.imageViewMap:
+                    startActivity(new Intent(getContext(), MapsActivity.class));
+                    break;
+                default:
+                    startActivity(new Intent(getContext(), FileClientActivity.class));
+                    break;
+            }
+//            String cliente = new Gson().toJson(c);
 //                startActivityForResult(new Intent(PersonalActivity.this, RegisterPersonalActivity.class)
 //                                .putExtra("personal", personal)
 //                                .putExtra("update", true)
-//
 //                        , Permission.PERSONAL_REQUEST);
         });
         recyclerView.setItemAnimator(new DefaultItemAnimator());

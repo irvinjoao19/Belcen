@@ -3,10 +3,11 @@ package com.dsige.belcen.context.room;
 import android.app.Application;
 
 import com.dsige.belcen.context.repository.RoomRepository;
-import com.dsige.belcen.model.Categoria;
-import com.dsige.belcen.model.Cliente;
-import com.dsige.belcen.model.Producto;
-import com.dsige.belcen.model.Usuario;
+import com.dsige.belcen.mvp.model.Categoria;
+import com.dsige.belcen.mvp.model.Cliente;
+import com.dsige.belcen.mvp.model.Pedido;
+import com.dsige.belcen.mvp.model.Producto;
+import com.dsige.belcen.mvp.model.Usuario;
 
 import java.util.List;
 
@@ -74,6 +75,10 @@ public class RoomViewModel extends AndroidViewModel {
         return roomRepository.deleteProducto(p);
     }
 
+    public void updateProducto(Producto p) {
+        roomRepository.updateProducto(p);
+    }
+
     //TODO : Categoria
 
     public void insertCategoria(Categoria c) {
@@ -86,5 +91,23 @@ public class RoomViewModel extends AndroidViewModel {
 
     public Completable deleteCategoria(Categoria c) {
         return roomRepository.deleteCategoria(c);
+    }
+
+    //TODO : Pedido
+
+    public void insertPedido(Pedido p) {
+        roomRepository.insertPedido(p);
+    }
+
+    public LiveData<List<Pedido>> getPedido() {
+        return roomRepository.getPedido();
+    }
+
+    public Completable deletePedido(Pedido p) {
+        return roomRepository.deletePedido(p);
+    }
+
+    public Completable updatePedido(Pedido p) {
+        return roomRepository.updatePedido(p);
     }
 }

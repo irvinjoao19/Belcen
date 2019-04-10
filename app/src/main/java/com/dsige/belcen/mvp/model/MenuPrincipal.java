@@ -1,4 +1,4 @@
-package com.dsige.belcen.model;
+package com.dsige.belcen.mvp.model;
 
 public class MenuPrincipal {
 

@@ -1,6 +1,6 @@
 package com.dsige.belcen.context.dao;
 
-import com.dsige.belcen.model.Categoria;
+import com.dsige.belcen.mvp.model.Categoria;
 
 import java.util.List;
 

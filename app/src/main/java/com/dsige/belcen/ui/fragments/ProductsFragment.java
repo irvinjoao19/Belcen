@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.dsige.belcen.R;
 import com.dsige.belcen.context.room.RoomViewModel;
 import com.dsige.belcen.helper.Util;
-import com.dsige.belcen.model.Categoria;
+import com.dsige.belcen.mvp.model.Categoria;
 import com.dsige.belcen.ui.adapters.ProductoAdapter;
 
 import java.util.List;

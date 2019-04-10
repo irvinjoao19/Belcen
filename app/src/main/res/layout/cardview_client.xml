@@ -36,7 +36,6 @@
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:lines="1"
-            android:text="IRVIN JOAO GONGORA HERNANDEZ"
             app:layout_constraintEnd_toStartOf="@+id/textViewDocumento"
             app:layout_constraintStart_toEndOf="@+id/imageViewFoto"
             app:layout_constraintTop_toTopOf="parent" />
@@ -47,7 +46,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="704012913"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,7 +58,6 @@
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:lines="1"
-            android:text="MZ D lote 2 Venecia San Felipe - Comas "
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageViewFoto"
             app:layout_constraintTop_toBottomOf="@+id/textViewNombre" />
@@ -71,8 +68,18 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Ultima Visita : 15 HORAS"
             app:layout_constraintStart_toEndOf="@+id/imageViewFoto"
             app:layout_constraintTop_toBottomOf="@+id/textViewDireccion" />
+
+        <ImageView
+            android:id="@+id/imageViewMap"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="@string/imagen"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_map" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

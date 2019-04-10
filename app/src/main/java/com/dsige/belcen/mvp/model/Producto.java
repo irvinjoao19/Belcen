@@ -1,4 +1,5 @@
-package com.dsige.belcen.model;
+package com.dsige.belcen.mvp.model;
+
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -20,18 +21,19 @@ public class Producto implements Parcelable {
     private double precioCompra;
     private double precioVenta;
     private String abreviaturaProducto;
-    private int unidadMedida;
+    private double unidadMedida;
     private String urlFoto;
     private double peso;
     private int stockMinimo;
     private int estado;
+    private double subTotal;
     private String fecha;
 
     public Producto() {
     }
 
     @Ignore
-    public Producto(int productoId, int categoriaId, String codigo, String codigoBarra, String nombre, String descripcion, double precioCompra, double precioVenta, String abreviaturaProducto, int unidadMedida, String urlFoto, double peso, int stockMinimo, int estado, String fecha) {
+    public Producto(int productoId, int categoriaId, String codigo, String codigoBarra, String nombre, String descripcion, double precioCompra, double precioVenta, String abreviaturaProducto, double unidadMedida, String urlFoto, double peso, int stockMinimo, int estado, double subTotal, String fecha) {
         this.productoId = productoId;
         this.categoriaId = categoriaId;
         this.codigo = codigo;
@@ -46,6 +48,7 @@ public class Producto implements Parcelable {
         this.peso = peso;
         this.stockMinimo = stockMinimo;
         this.estado = estado;
+        this.subTotal = subTotal;
         this.fecha = fecha;
     }
 
@@ -60,11 +63,12 @@ public class Producto implements Parcelable {
         precioCompra = in.readDouble();
         precioVenta = in.readDouble();
         abreviaturaProducto = in.readString();
-        unidadMedida = in.readInt();
+        unidadMedida = in.readDouble();
         urlFoto = in.readString();
         peso = in.readDouble();
         stockMinimo = in.readInt();
         estado = in.readInt();
+        subTotal = in.readDouble();
         fecha = in.readString();
     }
 
@@ -79,6 +83,31 @@ public class Producto implements Parcelable {
             return new Producto[size];
         }
     };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(productoId);
+        dest.writeInt(categoriaId);
+        dest.writeString(codigo);
+        dest.writeString(codigoBarra);
+        dest.writeString(nombre);
+        dest.writeString(descripcion);
+        dest.writeDouble(precioCompra);
+        dest.writeDouble(precioVenta);
+        dest.writeString(abreviaturaProducto);
+        dest.writeDouble(unidadMedida);
+        dest.writeString(urlFoto);
+        dest.writeDouble(peso);
+        dest.writeInt(stockMinimo);
+        dest.writeInt(estado);
+        dest.writeDouble(subTotal);
+        dest.writeString(fecha);
+    }
 
     public int getProductoId() {
         return productoId;
@@ -152,11 +181,11 @@ public class Producto implements Parcelable {
         this.abreviaturaProducto = abreviaturaProducto;
     }
 
-    public int getUnidadMedida() {
+    public double getUnidadMedida() {
         return unidadMedida;
     }
 
-    public void setUnidadMedida(int unidadMedida) {
+    public void setUnidadMedida(double unidadMedida) {
         this.unidadMedida = unidadMedida;
     }
 
@@ -192,6 +221,14 @@ public class Producto implements Parcelable {
         this.estado = estado;
     }
 
+    public double getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(double subTotal) {
+        this.subTotal = subTotal;
+    }
+
     public String getFecha() {
         return fecha;
     }
@@ -200,27 +237,7 @@ public class Producto implements Parcelable {
         this.fecha = fecha;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(productoId);
-        dest.writeInt(categoriaId);
-        dest.writeString(codigo);
-        dest.writeString(codigoBarra);
-        dest.writeString(nombre);
-        dest.writeString(descripcion);
-        dest.writeDouble(precioCompra);
-        dest.writeDouble(precioVenta);
-        dest.writeString(abreviaturaProducto);
-        dest.writeInt(unidadMedida);
-        dest.writeString(urlFoto);
-        dest.writeDouble(peso);
-        dest.writeInt(stockMinimo);
-        dest.writeInt(estado);
-        dest.writeString(fecha);
+    public static Creator<Producto> getCREATOR() {
+        return CREATOR;
     }
 }

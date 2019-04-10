@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.dsige.belcen.R;
+import com.dsige.belcen.context.dagger.App;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -26,6 +27,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        ((App) getApplication()).getComponent().inject(this);
         ButterKnife.bind(this);
     }
 

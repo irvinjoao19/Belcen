@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dsige.belcen.R;
-import com.dsige.belcen.model.MenuPrincipal;
+import com.dsige.belcen.mvp.model.MenuPrincipal;
 
 import java.util.List;
 

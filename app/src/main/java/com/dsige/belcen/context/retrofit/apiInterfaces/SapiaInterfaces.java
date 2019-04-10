@@ -1,6 +1,6 @@
 package com.dsige.belcen.context.retrofit.apiInterfaces;
 
-import com.dsige.belcen.model.Usuario;
+import com.dsige.belcen.mvp.model.Usuario;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;

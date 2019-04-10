@@ -1,6 +1,6 @@
 package com.dsige.belcen.context.dao;
 
-import com.dsige.belcen.model.Producto;
+import com.dsige.belcen.mvp.model.Producto;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 @Dao
 public interface ProductoDao {
@@ -19,6 +20,9 @@ public interface ProductoDao {
 
     @Delete
     void deleteProductoTask(Producto p);
+
+    @Update
+    void updateProductoTask(Producto p);
 
     @Query("SELECT * FROM Producto")
     LiveData<List<Producto>> getProductoTask();

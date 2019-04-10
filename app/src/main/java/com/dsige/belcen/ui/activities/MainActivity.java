@@ -6,6 +6,8 @@ import android.os.Bundle;
 import com.dsige.belcen.R;
 import com.dsige.belcen.ui.fragments.ClientFragment;
 
+import com.dsige.belcen.ui.fragments.MapsFragment;
+import com.dsige.belcen.ui.fragments.OrdersFragment;
 import com.dsige.belcen.ui.fragments.ProductsFragment;
 import com.google.android.material.navigation.NavigationView;
 
@@ -64,15 +66,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -84,8 +86,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 changeFragment(ProductsFragment.newInstance("", ""), item.getTitle().toString());
                 break;
             case R.id.pedidos:
+                changeFragment(OrdersFragment.newInstance("", ""), item.getTitle().toString());
                 break;
             case R.id.mapas:
+                changeFragment(MapsFragment.newInstance("", ""), item.getTitle().toString());
                 break;
             case R.id.logout:
                 Intent intent = new Intent(this, LoginActivity.class);

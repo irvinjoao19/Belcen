@@ -8,14 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dsige.belcen.R;
-import com.dsige.belcen.model.Categoria;
-import com.dsige.belcen.model.Producto;
+import com.dsige.belcen.mvp.model.Categoria;
+import com.dsige.belcen.mvp.model.Producto;
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
 import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
-import java.util.Collections;
 import java.util.List;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;

@@ -4,13 +4,15 @@ import android.content.Context;
 
 import com.dsige.belcen.context.dao.CategoriaDao;
 import com.dsige.belcen.context.dao.ClienteDao;
+import com.dsige.belcen.context.dao.PedidoDao;
 import com.dsige.belcen.context.dao.ProductoDao;
 import com.dsige.belcen.context.dao.UserDao;
 import com.dsige.belcen.helper.Util;
-import com.dsige.belcen.model.Categoria;
-import com.dsige.belcen.model.Cliente;
-import com.dsige.belcen.model.Producto;
-import com.dsige.belcen.model.Usuario;
+import com.dsige.belcen.mvp.model.Categoria;
+import com.dsige.belcen.mvp.model.Cliente;
+import com.dsige.belcen.mvp.model.Pedido;
+import com.dsige.belcen.mvp.model.Producto;
+import com.dsige.belcen.mvp.model.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,16 +33,9 @@ import io.reactivex.schedulers.Schedulers;
         Usuario.class,
         Cliente.class,
         Producto.class,
-        Categoria.class
-//        Migracion.class,
-//        Cliente.class,
-//        Personal.class,
-//        EstadoTicket.class,
-//        StatusTicket.class,
-//        SapiaRegistro.class,
-//        SapiaRegistroDetalle.class
-},
-        version = 1,
+        Categoria.class,
+        Pedido.class},
+        version = 2,
         exportSchema = false)
 @TypeConverters({Converts.class})
 public abstract class AppDataBase extends RoomDatabase {
@@ -52,6 +47,8 @@ public abstract class AppDataBase extends RoomDatabase {
     public abstract ProductoDao productoDao();
 
     public abstract CategoriaDao categoriaDao();
+
+    public abstract PedidoDao pedidoDao();
 
     private static volatile AppDataBase INSTANCE;
 
@@ -70,21 +67,11 @@ public abstract class AppDataBase extends RoomDatabase {
         return INSTANCE;
     }
 
-
-    /**
-     * Override the onOpen method to populate the database.
-     * For this sample, we clear the database every time it is created or opened.
-     * <p>
-     * If you want to populate the database only when the database is created for the 1st time,
-     * override RoomDatabase.Callback()#onCreate
-     */
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
 
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
-            // If you want to keep the data through app restarts,
-            // comment out the following line.
             Generar();
         }
     };
@@ -95,11 +82,14 @@ public abstract class AppDataBase extends RoomDatabase {
      */
     private static void Generar() {
         ProductoDao productoDao = INSTANCE.productoDao();
-        CategoriaDao categoriaDao = INSTANCE.categoriaDao();
+        PedidoDao pedidoDao = INSTANCE.pedidoDao();
         Completable completable = Completable.fromAction(() -> {
 
-            categoriaDao.deleteAll();
+
             productoDao.deleteAll();
+            pedidoDao.deleteAll();
+
+            List<Producto> productos = new ArrayList<>();
 
             for (int i = 0; i <= 10; i++) {
 
@@ -112,23 +102,22 @@ public abstract class AppDataBase extends RoomDatabase {
                 p.setDescripcion(String.format("Descripcion%s", i));
                 p.setPrecioCompra(10.5);
                 p.setPrecioVenta(11);
+                p.setUnidadMedida(0);
                 p.setAbreviaturaProducto(String.format("MA%s", i));
-                p.setUnidadMedida(10);
                 p.setUrlFoto(String.format("mantequilla%s.jpg", i));
                 p.setPeso(100);
                 p.setStockMinimo(10);
                 p.setEstado(1);
                 p.setFecha(Util.getFechaActual());
-
-                List<Producto> productos = new ArrayList<>();
+                p.setSubTotal(0);
+                productoDao.insertProductoTask(p);
                 productos.add(p);
 
-                Categoria a = new Categoria(String.format("Nombre%s", i), productos,i);
-
-                categoriaDao.insertCategoriaTask(a);
-
-                productoDao.insertProductoTask(p);
             }
+
+            Pedido p = new Pedido(1, 1, 0, productos);
+            pedidoDao.insertPedidoTask(p);
+
         });
         completable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -148,8 +137,5 @@ public abstract class AppDataBase extends RoomDatabase {
 
                     }
                 });
-
     }
-
-
 }

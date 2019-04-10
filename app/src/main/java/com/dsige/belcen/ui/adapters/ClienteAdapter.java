@@ -3,10 +3,11 @@ package com.dsige.belcen.ui.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dsige.belcen.R;
-import com.dsige.belcen.model.Cliente;
+import com.dsige.belcen.mvp.model.Cliente;
 
 import java.util.Collections;
 import java.util.List;
@@ -57,6 +58,9 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.ViewHold
         TextView textViewDireccion;
         @BindView(R.id.textViewVisita)
         TextView textViewVisita;
+        @BindView(R.id.imageViewMap)
+        ImageView imageViewMap;
+
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -65,10 +69,11 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.ViewHold
 
         void bind(Cliente c, OnItemClickListener listener) {
             textViewNombre.setText(c.getNombre());
-            textViewDocumento.setText(c.getTipo());
+            textViewDocumento.setText(c.getDocumento());
             textViewDireccion.setText(c.getDireccion());
             textViewVisita.setText(String.format("Ultima Visita : %s", c.getFechaVisita()));
             itemView.setOnClickListener(v -> listener.onItemClick(c, v, getAdapterPosition()));
+            imageViewMap.setOnClickListener(v -> listener.onItemClick(c, v, getAdapterPosition()));
         }
     }
 

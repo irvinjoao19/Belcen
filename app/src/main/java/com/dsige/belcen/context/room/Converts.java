@@ -1,7 +1,7 @@
 package com.dsige.belcen.context.room;
 
 
-import com.dsige.belcen.model.Producto;
+import com.dsige.belcen.mvp.model.Producto;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

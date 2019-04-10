@@ -1,4 +1,4 @@
-package com.dsige.belcen.model;
+package com.dsige.belcen.mvp.model;
 
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 
