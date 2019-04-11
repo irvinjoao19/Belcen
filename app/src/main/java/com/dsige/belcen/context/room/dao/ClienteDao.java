@@ -1,4 +1,4 @@
-package com.dsige.belcen.context.dao;
+package com.dsige.belcen.context.room.dao;
 
 import com.dsige.belcen.mvp.model.Cliente;
 

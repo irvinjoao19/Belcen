@@ -20,13 +20,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.support.DaggerAppCompatActivity;
 
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends DaggerAppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;

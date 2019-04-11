@@ -20,9 +20,10 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import dagger.android.support.DaggerFragment;
 
 
-public class MapsFragment extends Fragment implements OnMapReadyCallback {
+public class MapsFragment extends DaggerFragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 

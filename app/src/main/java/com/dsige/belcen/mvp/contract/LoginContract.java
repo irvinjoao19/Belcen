@@ -9,6 +9,10 @@ public interface LoginContract {
 
         void showInputError(String mensaje);
 
+        void loadLogin();
+
+        void closeLoadLogin();
+
         void goMainActivity();
     }
 

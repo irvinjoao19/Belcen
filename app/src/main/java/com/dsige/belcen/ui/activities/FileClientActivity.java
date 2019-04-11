@@ -2,18 +2,12 @@ package com.dsige.belcen.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.dsige.belcen.R;
-import com.dsige.belcen.context.room.RoomViewModel;
-import com.dsige.belcen.helper.Util;
-import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Objects;

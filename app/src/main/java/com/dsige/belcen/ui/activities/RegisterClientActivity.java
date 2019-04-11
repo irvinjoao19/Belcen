@@ -23,7 +23,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.dsige.belcen.R;
-import com.dsige.belcen.context.room.RoomViewModel;
 import com.dsige.belcen.helper.Permission;
 import com.dsige.belcen.helper.Util;
 import com.dsige.belcen.mvp.model.Cliente;
@@ -73,7 +72,7 @@ public class RegisterClientActivity extends AppCompatActivity {
     @BindView(R.id.editTextVisita)
     TextInputEditText editTextVisita;
 
-    RoomViewModel roomViewModel;
+//    RoomViewModel roomViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +83,7 @@ public class RegisterClientActivity extends AppCompatActivity {
     }
 
     private void bindUI() {
-        roomViewModel = ViewModelProviders.of(this).get(RoomViewModel.class);
+//        roomViewModel = ViewModelProviders.of(this).get(RoomViewModel.class);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Registrar Cliente");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

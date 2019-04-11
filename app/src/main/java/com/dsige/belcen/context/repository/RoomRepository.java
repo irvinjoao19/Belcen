@@ -21,10 +21,11 @@ import io.reactivex.schedulers.Schedulers;
 
 public class RoomRepository {
 
+
     private AppDataBase appDataBase;
 
-    public RoomRepository(Application application) {
-        this.appDataBase = AppDataBase.getDatabase(application);
+    public RoomRepository() {
+
     }
 
     public void closeRoom() {

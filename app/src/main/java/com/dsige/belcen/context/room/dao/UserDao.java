@@ -1,4 +1,4 @@
-package com.dsige.belcen.context.dao;
+package com.dsige.belcen.context.room.dao;
 
 import com.dsige.belcen.mvp.model.Usuario;
 
@@ -15,10 +15,6 @@ public interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertUserTask(Usuario user);
-
-//    @Query("SELECT * FROM Usuario ORDER BY created_at desc")
-//    LiveData<List<UserDao>> fetchAllTasks();
-
 
     @Query("SELECT * FROM Usuario")
     LiveData<Usuario> getUserTask();

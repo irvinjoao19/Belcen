@@ -1,7 +1,6 @@
 package com.dsige.belcen.ui.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,25 +8,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.dsige.belcen.R;
-import com.dsige.belcen.context.room.RoomViewModel;
 import com.dsige.belcen.helper.Util;
-import com.dsige.belcen.mvp.model.Cliente;
-import com.dsige.belcen.mvp.model.Pedido;
 import com.dsige.belcen.mvp.model.Producto;
-import com.dsige.belcen.ui.activities.FileClientActivity;
-import com.dsige.belcen.ui.activities.MapsActivity;
-import com.dsige.belcen.ui.adapters.ClienteAdapter;
 import com.dsige.belcen.ui.adapters.PedidoAdapter;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -36,8 +27,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import dagger.android.support.DaggerFragment;
 
-public class OrdersFragment extends Fragment {
+public class OrdersFragment extends DaggerFragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -52,7 +44,7 @@ public class OrdersFragment extends Fragment {
     TextView textViewTotal;
     private Unbinder unbinder;
     private PedidoAdapter pedidoAdapter;
-    private RoomViewModel roomViewModel;
+//    private RoomViewModel roomViewModel;
 
     public OrdersFragment() {
         // Required empty public constructor
@@ -92,7 +84,7 @@ public class OrdersFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        roomViewModel = ViewModelProviders.of(this).get(RoomViewModel.class);
+//        roomViewModel = ViewModelProviders.of(this).get(RoomViewModel.class);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -120,7 +112,7 @@ public class OrdersFragment extends Fragment {
                     double nPositive = Double.parseDouble(sTotal);
                     p.setUnidadMedida(nPositive);
                     p.setSubTotal(nPositive * p.getPrecioCompra());
-                    roomViewModel.updateProducto(p);
+//                    roomViewModel.updateProducto(p);
                     break;
                 case R.id.imageViewNegative:
                     double resta = Double.parseDouble(e.getText().toString());
@@ -130,7 +122,7 @@ public class OrdersFragment extends Fragment {
                         double nNegative = Double.parseDouble(rTotal);
                         p.setUnidadMedida(nNegative);
                         p.setSubTotal(nNegative * p.getPrecioCompra());
-                        roomViewModel.updateProducto(p);
+//                        roomViewModel.updateProducto(p);
                     }
                     break;
                 case R.id.editTextCantidad:
@@ -140,16 +132,16 @@ public class OrdersFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(pedidoAdapter);
-        LiveData<List<Producto>> productoData = roomViewModel.getProducto();
-        productoData.observe(this, productos -> {
-            double total = 0;
-            for (Producto p : productos) {
-                total = total + p.getSubTotal();
-            }
-
-            textViewTotal.setText(String.format("Total S/. %s", total));
-            pedidoAdapter.addItems(productos);
-        });
+//        LiveData<List<Producto>> productoData = roomViewModel.getProducto();
+//        productoData.observe(this, productos -> {
+//            double total = 0;
+//            for (Producto p : productos) {
+//                total = total + p.getSubTotal();
+//            }
+//
+//            textViewTotal.setText(String.format("Total S/. %s", total));
+//            pedidoAdapter.addItems(productos);
+//        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event

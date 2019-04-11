@@ -7,12 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.dsige.belcen.R;
-import com.dsige.belcen.context.room.RoomViewModel;
 import com.dsige.belcen.helper.Permission;
 import com.dsige.belcen.helper.Util;
 import com.dsige.belcen.mvp.model.Cliente;
@@ -27,7 +25,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -37,13 +34,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import dagger.android.support.DaggerFragment;
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class ClientFragment extends Fragment {
+public class ClientFragment extends DaggerFragment {
 
     @OnClick(R.id.fab)
     void submit(View view) {
@@ -68,7 +66,7 @@ public class ClientFragment extends Fragment {
     FloatingActionButton fab;
     private Unbinder unbinder;
     private ClienteAdapter clienteAdapter;
-    private RoomViewModel roomViewModel;
+//    private RoomViewModel roomViewModel;
 
     public ClientFragment() {
 
@@ -99,7 +97,7 @@ public class ClientFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        roomViewModel = ViewModelProviders.of(this).get(RoomViewModel.class);
+//        roomViewModel = ViewModelProviders.of(this).get(RoomViewModel.class);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -136,8 +134,8 @@ public class ClientFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(clienteAdapter);
-        LiveData<List<Cliente>> clienteData = roomViewModel.getCliente();
-        clienteData.observe(this, clients -> clienteAdapter.addItems(clients));
+//        LiveData<List<Cliente>> clienteData = roomViewModel.getCliente();
+//        clienteData.observe(this, clients -> clienteAdapter.addItems(clients));
     }
 
     @Override
@@ -158,54 +156,54 @@ public class ClientFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Permission.CLIENTE_REQUEST) {
-            if (resultCode == Permission.CLIENTE_INSERT_REQUEST) {
-                String cliente = data.getStringExtra("cliente");
-                Cliente c = new Gson().fromJson(cliente, Cliente.class);
-                Completable completable = roomViewModel.insertClient(c);
-                completable.subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new CompletableObserver() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-                                Util.toastMensaje(getContext(), "Cliente Agregado");
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.i("TAG", e.toString());
-                            }
-                        });
-//                aprobacionAdapter.clearByPosition(position);
-            } else if (resultCode == Permission.CLIENTE_UPDATE_REQUEST) {
-                String personal = data.getStringExtra("cliente");
-                Cliente c = new Gson().fromJson(personal, Cliente.class);
-                Completable completable = roomViewModel.updateClient(c);
-                completable.subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new CompletableObserver() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-                                Util.toastMensaje(getContext(), "Personal Actualizado");
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.i("TAG", e.toString());
-                            }
-                        });
-            }
-        }
+//        if (requestCode == Permission.CLIENTE_REQUEST) {
+//            if (resultCode == Permission.CLIENTE_INSERT_REQUEST) {
+//                String cliente = data.getStringExtra("cliente");
+//                Cliente c = new Gson().fromJson(cliente, Cliente.class);
+//                Completable completable = roomViewModel.insertClient(c);
+//                completable.subscribeOn(Schedulers.io())
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(new CompletableObserver() {
+//                            @Override
+//                            public void onSubscribe(Disposable d) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onComplete() {
+//                                Util.toastMensaje(getContext(), "Cliente Agregado");
+//                            }
+//
+//                            @Override
+//                            public void onError(Throwable e) {
+//                                Log.i("TAG", e.toString());
+//                            }
+//                        });
+////                aprobacionAdapter.clearByPosition(position);
+//            } else if (resultCode == Permission.CLIENTE_UPDATE_REQUEST) {
+//                String personal = data.getStringExtra("cliente");
+//                Cliente c = new Gson().fromJson(personal, Cliente.class);
+//                Completable completable = roomViewModel.updateClient(c);
+//                completable.subscribeOn(Schedulers.io())
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(new CompletableObserver() {
+//                            @Override
+//                            public void onSubscribe(Disposable d) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onComplete() {
+//                                Util.toastMensaje(getContext(), "Personal Actualizado");
+//                            }
+//
+//                            @Override
+//                            public void onError(Throwable e) {
+//                                Log.i("TAG", e.toString());
+//                            }
+//                        });
+//            }
+//        }
     }
 
 

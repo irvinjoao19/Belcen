@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dsige.belcen.R;
-import com.dsige.belcen.context.room.RoomViewModel;
 import com.dsige.belcen.helper.Util;
 import com.dsige.belcen.mvp.model.Categoria;
 import com.dsige.belcen.ui.adapters.ProductoAdapter;
@@ -17,7 +16,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -26,13 +24,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import dagger.android.support.DaggerFragment;
 
-public class ProductsFragment extends Fragment {
+public class ProductsFragment extends DaggerFragment {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     Unbinder unbinder;
-    RoomViewModel roomViewModel;
+//    RoomViewModel roomViewModel;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -58,7 +57,7 @@ public class ProductsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        roomViewModel = ViewModelProviders.of(this).get(RoomViewModel.class);
+//        roomViewModel = ViewModelProviders.of(this).get(RoomViewModel.class);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -82,15 +81,15 @@ public class ProductsFragment extends Fragment {
             ((DefaultItemAnimator) animator).setSupportsChangeAnimations(false);
         }
 
-        LiveData<List<Categoria>> categoriaData = roomViewModel.getCategoria();
-        categoriaData.observe(this, categorias -> {
-                    ProductoAdapter productoAdapter = new ProductoAdapter(
-                            categorias,
-                            (p, v, position) -> Util.toastMensaje(getContext(), p.getNombre()));
-                    recyclerView.setLayoutManager(layoutManager);
-                    recyclerView.setAdapter(productoAdapter);
-                }
-        );
+//        LiveData<List<Categoria>> categoriaData = roomViewModel.getCategoria();
+//        categoriaData.observe(this, categorias -> {
+//                    ProductoAdapter productoAdapter = new ProductoAdapter(
+//                            categorias,
+//                            (p, v, position) -> Util.toastMensaje(getContext(), p.getNombre()));
+//                    recyclerView.setLayoutManager(layoutManager);
+//                    recyclerView.setAdapter(productoAdapter);
+//                }
+//        );
     }
 
     // TODO: Rename method, update argument and hook method into UI event
