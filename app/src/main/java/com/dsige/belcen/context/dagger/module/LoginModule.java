@@ -10,7 +10,7 @@ import dagger.Provides;
 public class LoginModule {
 
     @Provides
-    public LoginContract.Presenter providerLoginPresenter(){
+    LoginContract.Presenter providerLoginPresenter() {
         return new LoginPresenter();
     }
 
