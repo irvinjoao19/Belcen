@@ -153,10 +153,6 @@ public class ClientFragment extends DaggerFragment implements ClienteContract.Vi
                 String cliente = data.getStringExtra("cliente");
                 Cliente c = new Gson().fromJson(cliente, Cliente.class);
                 presenter.insertCliente(getContext(), c);
-            } else if (resultCode == Permission.CLIENTE_UPDATE_REQUEST) {
-                String personal = data.getStringExtra("cliente");
-                Cliente c = new Gson().fromJson(personal, Cliente.class);
-                presenter.updateCliente(getContext(), c);
             }
         }
     }

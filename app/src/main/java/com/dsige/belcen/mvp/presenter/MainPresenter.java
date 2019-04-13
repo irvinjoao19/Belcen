@@ -1,7 +1,16 @@
 package com.dsige.belcen.mvp.presenter;
 
+import android.util.Log;
+
 import com.dsige.belcen.context.repository.AppRepository;
+import com.dsige.belcen.helper.Util;
 import com.dsige.belcen.mvp.contract.MainContract;
+
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainPresenter implements MainContract.Presenter {
 
@@ -25,7 +34,26 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void logout() {
-        view.closeSession();
+        Completable completable = appRepository.deleteUser();
+        completable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        view.closeSession();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.setError(e.toString());
+                        Log.i("TAG", e.toString());
+                    }
+                });
     }
 
     @Override

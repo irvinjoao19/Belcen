@@ -13,6 +13,8 @@ public interface MainContract {
         void goLogin();
 
         void closeSession();
+
+        void setError(String mensaje);
     }
 
     interface Presenter extends BasePresenter<View> {

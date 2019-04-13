@@ -22,7 +22,7 @@ public class FileClientePresenter implements FileClienteContract.Presenter {
 
     @Override
     public void startEditCliente(Cliente c) {
-
+        view.goEditCliente(c);
     }
 
     @Override

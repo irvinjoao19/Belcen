@@ -3,6 +3,7 @@ package com.dsige.belcen.context.module;
 import com.dsige.belcen.ui.activities.FileClientActivity;
 import com.dsige.belcen.ui.activities.LoginActivity;
 import com.dsige.belcen.ui.activities.MainActivity;
+import com.dsige.belcen.ui.activities.RegisterClientActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -18,4 +19,7 @@ public abstract class ActivityBindingModule {
 
     @ContributesAndroidInjector
     abstract FileClientActivity bindFileClientActivity();
+
+    @ContributesAndroidInjector
+    abstract RegisterClientActivity bindFileRegisterClientActivity();
 }

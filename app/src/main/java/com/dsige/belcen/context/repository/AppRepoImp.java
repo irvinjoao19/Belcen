@@ -72,18 +72,23 @@ public class AppRepoImp implements AppRepository {
     }
 
     @Override
+    public Completable deleteUser() {
+        return Completable.fromAction(() -> dataBase.userDao().deleteAllTask());
+    }
+
+    @Override
     public LiveData<List<Cliente>> populateClientes() {
         return dataBase.clienteDao().getClienteTask();
     }
 
     @Override
     public Completable insertCliente(Cliente c) {
-        return  Completable.fromAction(() -> dataBase.clienteDao().insertClienteTask(c));
+        return Completable.fromAction(() -> dataBase.clienteDao().insertClienteTask(c));
     }
 
     @Override
     public Completable updateCliente(Cliente c) {
-        return  Completable.fromAction(() -> dataBase.clienteDao().updateClienteTask(c));
+        return Completable.fromAction(() -> dataBase.clienteDao().updateClienteTask(c));
     }
 
     @Override

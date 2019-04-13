@@ -25,6 +25,9 @@ public interface UserDao {
     @Update
     void updateUserTask(Usuario user);
 
+    @Query("DELETE FROM Usuario")
+    void deleteAllTask();
+
     @Delete
     void deleteUserTask(Usuario user);
 }

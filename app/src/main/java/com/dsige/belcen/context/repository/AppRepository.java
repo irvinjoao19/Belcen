@@ -22,6 +22,8 @@ public interface AppRepository {
 
     LiveData<Usuario> getUser();
 
+    Completable deleteUser();
+
     // TODO : CLIENTE
 
     LiveData<List<Cliente>> populateClientes();

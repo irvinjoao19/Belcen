@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.dsige.belcen.R;
+import com.dsige.belcen.helper.Util;
 import com.dsige.belcen.mvp.contract.MainContract;
 import com.dsige.belcen.mvp.model.Usuario;
 import com.dsige.belcen.ui.adapters.HeaderViewHolder;
@@ -150,5 +151,10 @@ public class MainActivity extends DaggerAppCompatActivity implements MainContrac
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    public void setError(String mensaje) {
+        Util.snackBarMensaje(getWindow().getDecorView(),mensaje);
     }
 }

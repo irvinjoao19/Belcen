@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dagger.android.support.DaggerAppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import com.dsige.belcen.R;
 import com.dsige.belcen.helper.Permission;
 import com.dsige.belcen.helper.Util;
+import com.dsige.belcen.mvp.contract.RegisterContract;
 import com.dsige.belcen.mvp.model.Cliente;
 import com.dsige.belcen.mvp.model.MenuPrincipal;
 import com.dsige.belcen.ui.adapters.DialogSpinnerAdapter;
@@ -34,7 +36,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class RegisterClientActivity extends AppCompatActivity {
+import javax.inject.Inject;
+
+public class RegisterClientActivity extends DaggerAppCompatActivity implements RegisterContract.View {
 
     @OnClick({R.id.editTextTipo, R.id.editTextVisita})
     void submit(View view) {
@@ -71,13 +75,31 @@ public class RegisterClientActivity extends AppCompatActivity {
     @BindView(R.id.editTextVisita)
     TextInputEditText editTextVisita;
 
+    @Inject
+    RegisterContract.Presenter presenter;
+
+    Cliente cliente;
+    boolean modoUpdate = false;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.detachView(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_client);
         ButterKnife.bind(this);
+        presenter.attachView(this);
         bindUI();
+        cliente = new Cliente();
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            presenter.getCliente(b.getString("cliente"));
+            modoUpdate = true;
+        }
     }
 
     private void bindUI() {
@@ -106,70 +128,27 @@ public class RegisterClientActivity extends AppCompatActivity {
 
     private void formRegisterCliente() {
 
-        String tipo = Objects.requireNonNull(editTextTipo.getText()).toString().trim();
-        String documento = Objects.requireNonNull(editTextDocumento.getText()).toString().trim();
-        String nombre = Objects.requireNonNull(editTextNombre.getText()).toString().trim();
-        String pago = Objects.requireNonNull(editTextPago.getText()).toString().trim();
-        String departamento = Objects.requireNonNull(editTextDepartamento.getText()).toString().trim();
-        String distrito = Objects.requireNonNull(editTextDistrito.getText()).toString().trim();
-        String direccion = Objects.requireNonNull(editTextDireccion.getText()).toString().trim();
-        String telefono = Objects.requireNonNull(editTextTelefono.getText()).toString().trim();
-        String email = Objects.requireNonNull(editTextEmail.getText()).toString().trim();
-        String visita = Objects.requireNonNull(editTextVisita.getText()).toString().trim();
+        cliente.setTipo(Objects.requireNonNull(editTextTipo.getText()).toString().trim());
+        cliente.setDocumento(Objects.requireNonNull(editTextDocumento.getText()).toString().trim());
+        cliente.setNombre(Objects.requireNonNull(editTextNombre.getText()).toString().trim());
+        cliente.setPago(Objects.requireNonNull(editTextPago.getText()).toString().trim());
+        cliente.setDepartamento(Objects.requireNonNull(editTextDepartamento.getText()).toString().trim());
+        cliente.setDistrito(Objects.requireNonNull(editTextDistrito.getText()).toString().trim());
+        cliente.setDireccion(Objects.requireNonNull(editTextDireccion.getText()).toString().trim());
+        cliente.setTelefono(Objects.requireNonNull(editTextTelefono.getText()).toString().trim());
+        cliente.setEmail(Objects.requireNonNull(editTextEmail.getText()).toString().trim());
+        cliente.setFechaVisita(Objects.requireNonNull(editTextVisita.getText()).toString().trim());
+        cliente.setEstado(1);
 
-        if (!tipo.isEmpty()) {
-            if (!documento.isEmpty()) {
-                if (!nombre.isEmpty()) {
-                    if (!pago.isEmpty()) {
-                        if (!departamento.isEmpty()) {
-                            if (!distrito.isEmpty()) {
-                                if (!direccion.isEmpty()) {
-                                    if (!telefono.isEmpty()) {
-                                        if (!email.isEmpty()) {
-                                            if (!visita.isEmpty()) {
-                                                Cliente c = new Cliente(tipo,
-                                                        documento,
-                                                        nombre,
-                                                        pago,
-                                                        departamento,
-                                                        distrito,
-                                                        direccion,
-                                                        telefono,
-                                                        email,
-                                                        visita, 1);
-                                                String cliente = new Gson().toJson(c);
-                                                setResult(Permission.CLIENTE_INSERT_REQUEST,
-                                                        new Intent().putExtra("cliente", cliente));
-                                                finish();
-                                            } else {
-                                                Util.snackBarMensaje(getWindow().getDecorView(), "Ingrese Visita");
-                                            }
-                                        } else {
-                                            Util.snackBarMensaje(getWindow().getDecorView(), "Ingrese Email");
-                                        }
-                                    } else {
-                                        Util.snackBarMensaje(getWindow().getDecorView(), "Ingrese Telefono");
-                                    }
-                                } else {
-                                    Util.snackBarMensaje(getWindow().getDecorView(), "Ingrese Direccion");
-                                }
-                            } else {
-                                Util.snackBarMensaje(getWindow().getDecorView(), "Ingrese Distrito");
-                            }
-                        } else {
-                            Util.snackBarMensaje(getWindow().getDecorView(), "Ingrese Departamento");
-                        }
-                    } else {
-                        Util.snackBarMensaje(getWindow().getDecorView(), "Ingrese Pago");
-                    }
-                } else {
-                    Util.snackBarMensaje(getWindow().getDecorView(), "Ingrese Nombre");
-                }
+        if (presenter.validate(cliente)) {
+            if (modoUpdate) {
+                presenter.updateCliente(cliente);
             } else {
-                Util.snackBarMensaje(getWindow().getDecorView(), "Ingrese Documento");
+                String json = new Gson().toJson(cliente);
+                setResult(Permission.CLIENTE_INSERT_REQUEST,
+                        new Intent().putExtra("cliente", json));
+                finish();
             }
-        } else {
-            Util.snackBarMensaje(getWindow().getDecorView(), "Ingrese Tipo");
         }
     }
 
@@ -198,4 +177,35 @@ public class RegisterClientActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(dialogSpinnerAdapter);
     }
+
+    @Override
+    public void setCliente(Cliente c) {
+        cliente = c;
+        editTextTipo.setText(c.getTipo());
+        editTextDocumento.setText(c.getDocumento());
+        editTextNombre.setText(c.getNombre());
+        editTextPago.setText(c.getPago());
+        editTextDepartamento.setText(c.getDepartamento());
+        editTextDistrito.setText(c.getDistrito());
+        editTextDireccion.setText(c.getDireccion());
+        editTextTelefono.setText(c.getTelefono());
+        editTextEmail.setText(c.getEmail());
+        editTextVisita.setText(c.getFechaVisita());
+    }
+
+    @Override
+    public void goEditCliente() {
+
+    }
+
+    @Override
+    public void showErrorMensaje(String mensaje) {
+        Util.snackBarMensaje(getWindow().getDecorView(), mensaje);
+    }
+
+    @Override
+    public void close() {
+        finish();
+    }
+
 }

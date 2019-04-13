@@ -24,8 +24,6 @@ public interface ClienteContract {
 
         void insertCliente(Context context, Cliente c);
 
-        void updateCliente(Context context, Cliente c);
-
         void addRegisterCliente();
 
         void populateCliente();
