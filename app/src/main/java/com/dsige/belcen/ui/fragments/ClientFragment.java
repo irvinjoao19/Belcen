@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.dsige.belcen.R;
 import com.dsige.belcen.helper.Permission;
-import com.dsige.belcen.helper.Util;
+import com.dsige.belcen.mvp.contract.ClienteContract;
 import com.dsige.belcen.mvp.model.Cliente;
 import com.dsige.belcen.ui.activities.FileClientActivity;
 import com.dsige.belcen.ui.activities.MapsActivity;
@@ -23,10 +23,10 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,29 +35,24 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import dagger.android.support.DaggerFragment;
-import io.reactivex.Completable;
-import io.reactivex.CompletableObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
-public class ClientFragment extends DaggerFragment {
+public class ClientFragment extends DaggerFragment implements ClienteContract.View, ClienteContract.OnItemClickListener {
 
     @OnClick(R.id.fab)
     void submit(View view) {
         switch (view.getId()) {
             case R.id.fab:
-                startActivityForResult(new Intent(getContext(), RegisterClientActivity.class), Permission.CLIENTE_REQUEST);
+                presenter.addRegisterCliente();
                 break;
         }
     }
 
+    @Inject
+    ClienteContract.Presenter presenter;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private String mParam1;
-    private String mParam2;
     private OnFragmentInteractionListener mListener;
 
     @BindView(R.id.recyclerView)
@@ -66,7 +61,6 @@ public class ClientFragment extends DaggerFragment {
     FloatingActionButton fab;
     private Unbinder unbinder;
     private ClienteAdapter clienteAdapter;
-//    private RoomViewModel roomViewModel;
 
     public ClientFragment() {
 
@@ -95,12 +89,25 @@ public class ClientFragment extends DaggerFragment {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.detachView(this);
+        presenter.destroy();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.populateCliente();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        roomViewModel = ViewModelProviders.of(this).get(RoomViewModel.class);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
         setHasOptionsMenu(true);
     }
@@ -115,27 +122,12 @@ public class ClientFragment extends DaggerFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
+        presenter.attachView(this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        clienteAdapter = new ClienteAdapter((c, v, position) -> {
-            switch (v.getId()) {
-                case R.id.imageViewMap:
-                    startActivity(new Intent(getContext(), MapsActivity.class));
-                    break;
-                default:
-                    startActivity(new Intent(getContext(), FileClientActivity.class));
-                    break;
-            }
-//            String cliente = new Gson().toJson(c);
-//                startActivityForResult(new Intent(PersonalActivity.this, RegisterPersonalActivity.class)
-//                                .putExtra("personal", personal)
-//                                .putExtra("update", true)
-//                        , Permission.PERSONAL_REQUEST);
-        });
+        clienteAdapter = new ClienteAdapter(this);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(clienteAdapter);
-//        LiveData<List<Cliente>> clienteData = roomViewModel.getCliente();
-//        clienteData.observe(this, clients -> clienteAdapter.addItems(clients));
     }
 
     @Override
@@ -156,56 +148,56 @@ public class ClientFragment extends DaggerFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == Permission.CLIENTE_REQUEST) {
-//            if (resultCode == Permission.CLIENTE_INSERT_REQUEST) {
-//                String cliente = data.getStringExtra("cliente");
-//                Cliente c = new Gson().fromJson(cliente, Cliente.class);
-//                Completable completable = roomViewModel.insertClient(c);
-//                completable.subscribeOn(Schedulers.io())
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(new CompletableObserver() {
-//                            @Override
-//                            public void onSubscribe(Disposable d) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onComplete() {
-//                                Util.toastMensaje(getContext(), "Cliente Agregado");
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//                                Log.i("TAG", e.toString());
-//                            }
-//                        });
-////                aprobacionAdapter.clearByPosition(position);
-//            } else if (resultCode == Permission.CLIENTE_UPDATE_REQUEST) {
-//                String personal = data.getStringExtra("cliente");
-//                Cliente c = new Gson().fromJson(personal, Cliente.class);
-//                Completable completable = roomViewModel.updateClient(c);
-//                completable.subscribeOn(Schedulers.io())
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(new CompletableObserver() {
-//                            @Override
-//                            public void onSubscribe(Disposable d) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onComplete() {
-//                                Util.toastMensaje(getContext(), "Personal Actualizado");
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//                                Log.i("TAG", e.toString());
-//                            }
-//                        });
-//            }
-//        }
+        if (requestCode == Permission.CLIENTE_REQUEST) {
+            if (resultCode == Permission.CLIENTE_INSERT_REQUEST) {
+                String cliente = data.getStringExtra("cliente");
+                Cliente c = new Gson().fromJson(cliente, Cliente.class);
+                presenter.insertCliente(getContext(), c);
+            } else if (resultCode == Permission.CLIENTE_UPDATE_REQUEST) {
+                String personal = data.getStringExtra("cliente");
+                Cliente c = new Gson().fromJson(personal, Cliente.class);
+                presenter.updateCliente(getContext(), c);
+            }
+        }
     }
 
+    @Override
+    public void setClientes(List<Cliente> customers) {
+        clienteAdapter.addItems(customers);
+    }
+
+    @Override
+    public void goRegisterCliente() {
+        startActivityForResult(new Intent(getContext(), RegisterClientActivity.class), Permission.CLIENTE_REQUEST);
+    }
+
+    @Override
+    public void goMaps() {
+        startActivity(new Intent(getContext(), MapsActivity.class));
+    }
+
+    @Override
+    public void goFileCliente(Cliente c) {
+        String json = new Gson().toJson(c);
+        startActivity(new Intent(getContext(), FileClientActivity.class).putExtra("cliente", json));
+    }
+
+    @Override
+    public void onItemClick(Cliente c, View v, int position) {
+        switch (v.getId()) {
+            case R.id.imageViewMap:
+                presenter.startMaps();
+                break;
+            default:
+                presenter.startFileCliente(c);
+                break;
+        }
+    }
+
+    @Override
+    public void onLongClick(Cliente c, View v, int position) {
+
+    }
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);

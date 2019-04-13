@@ -4,8 +4,8 @@ import android.app.Application;
 
 import com.dsige.belcen.context.App;
 import com.dsige.belcen.context.module.ActivityBindingModule;
+import com.dsige.belcen.context.module.ApplicationModule;
 import com.dsige.belcen.context.module.DataBaseModule;
-import com.dsige.belcen.context.module.LoginModule;
 import com.dsige.belcen.context.module.RetrofitModule;
 
 import javax.inject.Singleton;
@@ -18,11 +18,10 @@ import dagger.android.support.AndroidSupportInjectionModule;
 @Singleton
 @Component(modules = {AndroidSupportInjectionModule.class,
         ActivityBindingModule.class,
-        LoginModule.class,
+        ApplicationModule.class,
         DataBaseModule.class,
         RetrofitModule.class})
 public interface ApplicationComponent extends AndroidInjector<App> {
-
     @Component.Builder
     interface Builder {
         @BindsInstance
@@ -30,5 +29,4 @@ public interface ApplicationComponent extends AndroidInjector<App> {
 
         ApplicationComponent build();
     }
-
 }

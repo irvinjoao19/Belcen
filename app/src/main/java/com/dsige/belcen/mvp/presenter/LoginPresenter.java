@@ -3,15 +3,9 @@ package com.dsige.belcen.mvp.presenter;
 import android.util.Log;
 
 import com.dsige.belcen.context.repository.AppRepository;
-import com.dsige.belcen.helper.MessageError;
-import com.dsige.belcen.helper.Util;
 import com.dsige.belcen.mvp.contract.LoginContract;
 import com.dsige.belcen.mvp.model.Usuario;
-import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -19,25 +13,16 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
-import retrofit2.Converter;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginPresenter implements LoginContract.Presenter {
 
     private LoginContract.View view;
-
     private AppRepository appRepository;
 
     public LoginPresenter(AppRepository appRepository) {
         this.appRepository = appRepository;
     }
 
-    @Override
-    public void setView(LoginContract.View view) {
-        this.view = view;
-    }
 
     @Override
     public void loginButtonClicked() {
@@ -112,5 +97,20 @@ public class LoginPresenter implements LoginContract.Presenter {
                     }
                 });
 
+    }
+
+    @Override
+    public void detachView(LoginContract.View view) {
+        this.view = null;
+    }
+
+    @Override
+    public void attachView(LoginContract.View view) {
+        this.view = view;
+    }
+
+    @Override
+    public void destroy() {
+//        appRepository.closeRoom();
     }
 }

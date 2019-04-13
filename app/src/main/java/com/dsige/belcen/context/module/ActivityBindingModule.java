@@ -1,5 +1,6 @@
 package com.dsige.belcen.context.module;
 
+import com.dsige.belcen.ui.activities.FileClientActivity;
 import com.dsige.belcen.ui.activities.LoginActivity;
 import com.dsige.belcen.ui.activities.MainActivity;
 
@@ -14,4 +15,7 @@ public abstract class ActivityBindingModule {
 
     @ContributesAndroidInjector(modules = {FragmentBindingModule.class})
     abstract MainActivity bindMainActivity();
+
+    @ContributesAndroidInjector
+    abstract FileClientActivity bindFileClientActivity();
 }

@@ -15,16 +15,23 @@ import androidx.room.Room;
 import dagger.Module;
 import dagger.Provides;
 
-
 @Module
 public class DataBaseModule {
 
     @Provides
     @Singleton
     AppDataBase provideRoomDatabase(Application application) {
-        return Room.databaseBuilder(application, AppDataBase.class, AppDataBase.DB_NAME)
-                .fallbackToDestructiveMigration()
-                .build();
+        if (AppDataBase.INSTANCE == null) {
+            synchronized (AppDataBase.class) {
+                if (AppDataBase.INSTANCE == null) {
+                    AppDataBase.INSTANCE = Room.databaseBuilder(application.getApplicationContext(),
+                            AppDataBase.class, AppDataBase.DB_NAME)
+                            .fallbackToDestructiveMigration()
+                            .build();
+                }
+            }
+        }
+        return AppDataBase.INSTANCE;
     }
 
     @Provides

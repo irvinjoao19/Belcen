@@ -36,9 +36,9 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
     androidTestImplementation "android.arch.persistence.room:testing:1.1.1"
 
-    implementation "android.arch.lifecycle:extensions:1.1.1"
-    implementation "android.arch.lifecycle:livedata:1.1.1"
-    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
+//    implementation "android.arch.lifecycle:extensions:1.1.1"
+//    implementation "android.arch.lifecycle:livedata:1.1.1"
+//    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
 
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
@@ -47,8 +47,8 @@ dependencies {
 //    annotationProcessor "com.google.dagger:dagger-compiler:2.16"
 //    implementation "com.google.dagger:dagger:2.16"
 
-    implementation "com.google.dagger:dagger:2.16"
-    annotationProcessor "com.google.dagger:dagger-compiler:2.16"
+    implementation "com.google.dagger:dagger:2.17"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.17"
     implementation "com.google.dagger:dagger-android-support:2.16"
     annotationProcessor "com.google.dagger:dagger-android-processor:2.16"
 

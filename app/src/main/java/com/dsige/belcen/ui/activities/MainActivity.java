@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.dsige.belcen.R;
+import com.dsige.belcen.mvp.contract.MainContract;
+import com.dsige.belcen.mvp.model.Usuario;
+import com.dsige.belcen.ui.adapters.HeaderViewHolder;
 import com.dsige.belcen.ui.fragments.ClientFragment;
 
 import com.dsige.belcen.ui.fragments.MapsFragment;
@@ -24,10 +27,14 @@ import dagger.android.support.DaggerAppCompatActivity;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import java.util.Objects;
 
-public class MainActivity extends DaggerAppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import javax.inject.Inject;
+
+public class MainActivity extends DaggerAppCompatActivity implements MainContract.View, NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -36,12 +43,26 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
     @BindView(R.id.navigationView)
     NavigationView navigationView;
 
+    @Inject
+    MainContract.Presenter presenter;
+
+    HeaderViewHolder headerViewHolder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        presenter.attachView(this);
+        presenter.getUserExist();
         bindUI();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.detachView(this);
+        presenter.destroy();
     }
 
     private void bindUI() {
@@ -67,15 +88,6 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -93,9 +105,7 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
                 changeFragment(MapsFragment.newInstance("", ""), item.getTitle().toString());
                 break;
             case R.id.logout:
-                Intent intent = new Intent(this, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                presenter.logout();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -117,5 +127,28 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
                 .commit();
         Objects.requireNonNull(getSupportActionBar()).setTitle("Cliente");
         navigationView.getMenu().getItem(0).setChecked(true);
+    }
+
+    @Override
+    public void getUser(Usuario u) {
+        View header = navigationView.getHeaderView(0);
+        headerViewHolder = new HeaderViewHolder(header);
+        headerViewHolder.textViewName.setText(u.getNombre());
+        headerViewHolder.textViewEmail.setText(u.getEmail());
+    }
+
+    @Override
+    public void goLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void closeSession() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

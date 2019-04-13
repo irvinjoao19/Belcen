@@ -12,15 +12,16 @@ import android.widget.TextView;
 
 import com.dsige.belcen.R;
 import com.dsige.belcen.helper.Util;
+import com.dsige.belcen.mvp.contract.PedidosContract;
 import com.dsige.belcen.mvp.model.Producto;
 import com.dsige.belcen.ui.adapters.PedidoAdapter;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,13 +30,14 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import dagger.android.support.DaggerFragment;
 
-public class OrdersFragment extends DaggerFragment {
+public class OrdersFragment extends DaggerFragment implements PedidosContract.View {
+
+    @Inject
+    PedidosContract.Presenter presenter;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private String mParam1;
-    private String mParam2;
     private OnFragmentInteractionListener mListener;
 
     @BindView(R.id.recyclerView)
@@ -44,7 +46,6 @@ public class OrdersFragment extends DaggerFragment {
     TextView textViewTotal;
     private Unbinder unbinder;
     private PedidoAdapter pedidoAdapter;
-//    private RoomViewModel roomViewModel;
 
     public OrdersFragment() {
         // Required empty public constructor
@@ -82,12 +83,19 @@ public class OrdersFragment extends DaggerFragment {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.detachView(this);
+        presenter.destroy();
+    }
+
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        roomViewModel = ViewModelProviders.of(this).get(RoomViewModel.class);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
         setHasOptionsMenu(true);
     }
@@ -101,6 +109,7 @@ public class OrdersFragment extends DaggerFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        presenter.attachView(this);
         unbinder = ButterKnife.bind(this, view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         pedidoAdapter = new PedidoAdapter((p, v, e, position) -> {
@@ -112,7 +121,7 @@ public class OrdersFragment extends DaggerFragment {
                     double nPositive = Double.parseDouble(sTotal);
                     p.setUnidadMedida(nPositive);
                     p.setSubTotal(nPositive * p.getPrecioCompra());
-//                    roomViewModel.updateProducto(p);
+                    presenter.updateProducto(p);
                     break;
                 case R.id.imageViewNegative:
                     double resta = Double.parseDouble(e.getText().toString());
@@ -122,7 +131,7 @@ public class OrdersFragment extends DaggerFragment {
                         double nNegative = Double.parseDouble(rTotal);
                         p.setUnidadMedida(nNegative);
                         p.setSubTotal(nNegative * p.getPrecioCompra());
-//                        roomViewModel.updateProducto(p);
+                        presenter.updateProducto(p);
                     }
                     break;
                 case R.id.editTextCantidad:
@@ -132,23 +141,7 @@ public class OrdersFragment extends DaggerFragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(pedidoAdapter);
-//        LiveData<List<Producto>> productoData = roomViewModel.getProducto();
-//        productoData.observe(this, productos -> {
-//            double total = 0;
-//            for (Producto p : productos) {
-//                total = total + p.getSubTotal();
-//            }
-//
-//            textViewTotal.setText(String.format("Total S/. %s", total));
-//            pedidoAdapter.addItems(productos);
-//        });
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        presenter.populateProducto();
     }
 
     @Override
@@ -163,6 +156,16 @@ public class OrdersFragment extends DaggerFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void setProductos(List<Producto> productos) {
+        double total = 0;
+        for (Producto p : productos) {
+            total = total + p.getSubTotal();
+        }
+        textViewTotal.setText(String.format("Total S/. %s", total));
+        pedidoAdapter.addItems(productos);
     }
 
     public interface OnFragmentInteractionListener {

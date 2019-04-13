@@ -4,7 +4,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -72,7 +71,6 @@ public class RegisterClientActivity extends AppCompatActivity {
     @BindView(R.id.editTextVisita)
     TextInputEditText editTextVisita;
 
-//    RoomViewModel roomViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +81,6 @@ public class RegisterClientActivity extends AppCompatActivity {
     }
 
     private void bindUI() {
-//        roomViewModel = ViewModelProviders.of(this).get(RoomViewModel.class);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Registrar Cliente");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -201,6 +198,4 @@ public class RegisterClientActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(dialogSpinnerAdapter);
     }
-
-
 }

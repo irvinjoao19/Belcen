@@ -44,12 +44,14 @@ public class LoginActivity extends DaggerAppCompatActivity implements LoginContr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        presenter.attachView(this);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        presenter.setView(this);
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.detachView(this);
+        presenter.destroy();
     }
 
     @OnClick(R.id.buttonEnviar)

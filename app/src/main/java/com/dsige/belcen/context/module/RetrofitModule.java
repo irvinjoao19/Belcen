@@ -1,9 +1,8 @@
 package com.dsige.belcen.context.module;
 
-import com.dsige.belcen.BuildConfig;
 import com.dsige.belcen.context.repository.AppRepoImp;
 import com.dsige.belcen.context.repository.AppRepository;
-import com.dsige.belcen.context.retrofit.ApiService;
+import com.dsige.belcen.context.repository.ApiService;
 import com.dsige.belcen.context.room.AppDataBase;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -64,5 +63,4 @@ public class RetrofitModule {
     AppRepository provideRepository(ApiService apiService, AppDataBase database) {
         return new AppRepoImp(apiService, database);
     }
-
 }

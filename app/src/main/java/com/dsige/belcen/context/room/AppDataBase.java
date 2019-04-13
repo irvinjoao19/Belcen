@@ -38,7 +38,7 @@ public abstract class AppDataBase extends RoomDatabase {
 
     public abstract PedidoDao pedidoDao();
 
-//    private static volatile AppDataBase INSTANCE;
+    public static volatile AppDataBase INSTANCE;
 //
 //    public static AppDataBase getDatabase(Context context) {
 //        if (INSTANCE == null) {
@@ -126,4 +126,6 @@ public abstract class AppDataBase extends RoomDatabase {
 //                    }
 //                });
 //    }
+
+
 }

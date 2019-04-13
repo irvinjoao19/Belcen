@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dsige.belcen.R;
+import com.dsige.belcen.mvp.contract.ClienteContract;
 import com.dsige.belcen.mvp.model.Cliente;
 
 import java.util.Collections;
@@ -20,9 +21,9 @@ import butterknife.ButterKnife;
 public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.ViewHolder> {
 
     private List<Cliente> clients = Collections.emptyList();
-    private OnItemClickListener listener;
+    private ClienteContract.OnItemClickListener listener;
 
-    public ClienteAdapter(OnItemClickListener listener) {
+    public ClienteAdapter(ClienteContract.OnItemClickListener listener) {
         this.listener = listener;
     }
 
@@ -67,7 +68,7 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.ViewHold
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(Cliente c, OnItemClickListener listener) {
+        void bind(Cliente c, ClienteContract.OnItemClickListener listener) {
             textViewNombre.setText(c.getNombre());
             textViewDocumento.setText(c.getDocumento());
             textViewDireccion.setText(c.getDireccion());
@@ -77,8 +78,8 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.ViewHold
         }
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(Cliente c, View v, int position);
-//        void onLongClick(Cliente p, View v, int position);
-    }
+//    public interface OnItemClickListener {
+//        void onItemClick(Cliente c, View v, int position);
+////        void onLongClick(Cliente p, View v, int position);
+//    }
 }

@@ -1,4 +1,4 @@
-package com.dsige.belcen.context.retrofit;
+package com.dsige.belcen.context.repository;
 
 import com.dsige.belcen.mvp.model.Usuario;
 

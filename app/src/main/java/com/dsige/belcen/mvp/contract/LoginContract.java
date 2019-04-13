@@ -1,8 +1,11 @@
 package com.dsige.belcen.mvp.contract;
 
+import com.dsige.belcen.mvp.base.BasePresenter;
+import com.dsige.belcen.mvp.base.BaseView;
+
 public interface LoginContract {
 
-    interface View {
+    interface View extends BaseView {
         String getUser();
 
         String getPassword();
@@ -16,13 +19,8 @@ public interface LoginContract {
         void goMainActivity();
     }
 
-    interface Presenter {
-        void setView(LoginContract.View view);
-
+    interface Presenter  extends BasePresenter<View> {
         void loginButtonClicked();
     }
 
-    interface Model {
-
-    }
 }

@@ -8,16 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dsige.belcen.R;
-import com.dsige.belcen.helper.Util;
-import com.dsige.belcen.mvp.model.Categoria;
-import com.dsige.belcen.ui.adapters.ProductoAdapter;
-
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
