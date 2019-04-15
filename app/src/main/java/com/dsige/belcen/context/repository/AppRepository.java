@@ -32,6 +32,8 @@ public interface AppRepository {
 
     Completable updateCliente(Cliente c);
 
+    LiveData<Cliente> getClienteById(int id);
+
     //TODO : Producto
 
     LiveData<List<Producto>> populateProducto();

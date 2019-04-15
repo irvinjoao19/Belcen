@@ -7,6 +7,7 @@ import com.dsige.belcen.mvp.contract.RegisterContract;
 import com.dsige.belcen.mvp.model.Cliente;
 import com.google.gson.Gson;
 
+import androidx.lifecycle.ViewModel;
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;

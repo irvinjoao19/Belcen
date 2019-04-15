@@ -92,6 +92,11 @@ public class AppRepoImp implements AppRepository {
     }
 
     @Override
+    public LiveData<Cliente> getClienteById(int id) {
+        return dataBase.clienteDao().getClienteTaskById(id);
+    }
+
+    @Override
     public LiveData<List<Producto>> populateProducto() {
         return dataBase.productoDao().getProductoTask();
     }

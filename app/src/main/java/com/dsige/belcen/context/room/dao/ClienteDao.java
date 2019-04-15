@@ -28,5 +28,5 @@ public interface ClienteDao {
     LiveData<List<Cliente>> getClienteTask();
 
     @Query("SELECT * FROM Cliente WHERE clienteId =:id")
-    LiveData<Cliente> getClienteById(int id);
+    LiveData<Cliente> getClienteTaskById(int id);
 }

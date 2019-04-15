@@ -16,7 +16,7 @@ public interface FileClienteContract {
 
     interface Presenter extends BasePresenter<View> {
 
-        void getCliente(String cliente);
+        void getCliente(int id);
 
         void startEditCliente(Cliente c);
 

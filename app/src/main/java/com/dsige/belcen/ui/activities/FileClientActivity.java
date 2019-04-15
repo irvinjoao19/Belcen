@@ -82,8 +82,8 @@ public class FileClientActivity extends DaggerAppCompatActivity implements FileC
         bindUI();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            String json = bundle.getString("cliente");
-            presenter.getCliente(json);
+            int  id = bundle.getInt("id");
+            presenter.getCliente(id);
         }
     }
 

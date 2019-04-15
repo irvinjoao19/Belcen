@@ -174,8 +174,7 @@ public class ClientFragment extends DaggerFragment implements ClienteContract.Vi
 
     @Override
     public void goFileCliente(Cliente c) {
-        String json = new Gson().toJson(c);
-        startActivity(new Intent(getContext(), FileClientActivity.class).putExtra("cliente", json));
+        startActivity(new Intent(getContext(), FileClientActivity.class).putExtra("id", c.getClienteId()));
     }
 
     @Override

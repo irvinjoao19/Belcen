@@ -1,6 +1,7 @@
 package com.dsige.belcen.context.module;
 
 import com.dsige.belcen.context.repository.AppRepository;
+import com.dsige.belcen.mvp.base.ViewModelFactory;
 import com.dsige.belcen.mvp.contract.ClienteContract;
 import com.dsige.belcen.mvp.contract.FileClienteContract;
 import com.dsige.belcen.mvp.contract.LoginContract;
@@ -14,6 +15,12 @@ import com.dsige.belcen.mvp.presenter.MainPresenter;
 import com.dsige.belcen.mvp.presenter.PedidosPresenter;
 import com.dsige.belcen.mvp.presenter.RegisterPresenter;
 
+import java.util.Map;
+
+import javax.inject.Provider;
+
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import dagger.Module;
 import dagger.Provides;
 
@@ -49,4 +56,10 @@ public class ApplicationModule {
     RegisterContract.Presenter providerRegisterPresenter(AppRepository appRepository) {
         return new RegisterPresenter(appRepository);
     }
+
+//    @Provides
+//    ViewModelProvider.Factory provideViewModelFactory(Map<Class<? extends ViewModel>, Provider<ViewModel>> creators) {
+//        return new ViewModelFactory(creators);
+//    }
+
 }
